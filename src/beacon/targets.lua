@@ -91,7 +91,6 @@ function M.GetBeaconTargets(currentIndex)
     if not IsEmpty(ShipWheels) and Contains(cfg.DestinationTypes, "ShipWheels") then
         for _, id in pairs(ShipWheels) do
             if GetName({ Id = id}) == "ShipsSteeringWheel" then goto continue end
-            TolkSpeak(id)
             table.insert(targets, id)
             ::continue::
         end

@@ -136,7 +136,6 @@ end }
 -- Keyboard controls
 --------------------------------------------------------------------------------
 rom.inputs.on_key_pressed{"Shift OemOpenBrackets", Name = "Beacon: Previous Category", function()
-    SetPlayerInvulnerable("Balls")
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
         beaconCommands.CycleBeaconCategory(-1)
     end
