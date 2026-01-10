@@ -2,7 +2,7 @@
   "namespace": "FlatArther",
   "name": "HadesIIAccess",
   "description": "An accessibility mod that provides audio-based navigation and targeting, as well as spoken info on various objects.",
-  "version_number": "0.4.1",
+  "version_number": "0.4.2",
   "dependencies": [
     "Hell2Modding-Hell2Modding-1.0.28",
     "SGG_Modding-ENVY-1.0.1",
