@@ -22,9 +22,14 @@ function M.CycleBeaconCategory(direction)
     beaconState.categoryIndex = newIndex
 
     local label = "All"
+    local cat = BeaconCategoryTables[beaconCategories[newIndex]]
     if newIndex > 0 then
-        label = BeaconCategoryTables[beaconCategories[newIndex]].DisplayName
+        if not cat then 
+            label = "Unconfigured category"
+        else
+        label = cat.DisplayName or "Unnamed category"
     end
+end
 
     TolkSpeak(label, true)
 end

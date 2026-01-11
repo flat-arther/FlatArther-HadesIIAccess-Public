@@ -4,7 +4,14 @@ import 'data/StaticIdDisplayNames.lua'
 local BeaconCategoryTables = config.TrackingBeaconTargetCategories or {}
 local beaconCategories = config.AccessDisplay.CategoriesArray or
     { "EnemyTeam", "NPCs", "Interactibles", "ConsumableItems", "Loot", "HeroTeam", "DestructibleGeo", "Traps", "Familiars", "ExitDoors", }
-
+local defaultCatCfg = {                IgnoreInvulnerable = false,
+                IgnorePermanentlyInvulnerable = false,
+                IgnoreHomingIneligible = false,
+                IgnoreSelf = true,
+                StopsProjectiles = false,
+                StopsUnits = false,
+                DestinationTypes = {"WeaponKit01", "FamiliarKit", "ShipWheels", "NightMirror", "HadesFountain", "WitchHut", "PalaceForcefield"},
+            }
 
 local TargetBasePriority = config.BeaconTargetWeights or {
     Unit = 3.5,
@@ -34,20 +41,12 @@ local function ResolveCategoryConfig(currentIndex)
     if currentIndex == 0 then
         return {
             Names = beaconCategories,
-            Config = {
-                IgnoreInvulnerable = false,
-                IgnorePermanentlyInvulnerable = false,
-                IgnoreHomingIneligible = false,
-                IgnoreSelf = true,
-                StopsProjectiles = false,
-                StopsUnits = false,
-                DestinationTypes = {"WeaponKit01", "FamiliarKit", "ShipWheels", "NightMirror", "HadesFountain", "WitchHut", "PalaceForcefield"},
-            }
+            Config = defaultCatCfg
         }
     end
 
     local key = beaconCategories[currentIndex]
-    local cfg = BeaconCategoryTables[key] or {}
+    local cfg = BeaconCategoryTables[key] or defaultCatCfg
 
     local catList = {}
     catList[key] = true
