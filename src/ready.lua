@@ -56,6 +56,7 @@ OnControlPressed { ModControl, function(triggerArgs)
         SessionMapState.BlockInventory = true
         if IsInputAllowed({ }) then
         FreezePlayerUnit("TrackingBeacon", FreezePlayerArgs)
+        TogglePlayerMove( true, "TrackingBeacon")
         end
 end }
 

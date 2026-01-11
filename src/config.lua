@@ -8,7 +8,7 @@ return {
         ShortenHealthStrings = false,
         -- Use the following arrays to sort how you would like info and categories to be displayed, and which ones appear on their respective lists. Note that you can easily break this should you misspell something. 
         InfoArray = {"Armor", "Health", "Name", "DoorInfo", "ItemInfo", "WeaponInfo", "GardenInfo", "Anim", "Dist", "Effects" },
-        CategoriesArray = { "Interactibles", "EnemyTeam", "NPCs", "ConsumableItems", "Loot", "HeroTeam", "Terrain", "Traps", "Familiars", "ExitDoors", },
+        CategoriesArray = { "Interactibles", "EnemyTeam", "NPCs", "ConsumableItems", "Loot", "HeroTeam", "Terrain", "Traps", "Familiars", "ExitDoors" },
     },
     -- Navigation config
     AccessModNavigation = {
