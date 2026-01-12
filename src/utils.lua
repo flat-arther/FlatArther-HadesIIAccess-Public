@@ -157,7 +157,10 @@ modutil.mod.Path.Wrap("GetDisplayName", function(base, args)
     else
         display = display:gsub("{!Icons%..-}%s", "")
     end
-    display = display:gsub("Drop", ""):gsub("RoomReward", ""):gsub("StoreReward", ""):gsub("([^%u])(%u)", "%1 %2"):gsub("0%d+$", ""):gsub(" ë", "ë")-- Hacky but works
+    display = display:gsub("Drop", ""):gsub("RoomReward", ""):gsub("StoreReward", ""):gsub("0%d+$", "")
+    if not HasDisplayName({ Text = args.Text}) then
+        display = display:gsub("([^%u])(%u)", "%1 %2")
+    end
     return display
 end)
 
