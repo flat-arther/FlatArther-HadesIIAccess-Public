@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.4] - 2026-01-12
+
 ### Fixed
 
 - Fixed an issue with non ascii characters being substituted when converting camelcase to normal spaces     
@@ -152,7 +154,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation of the accessibility tracking beacon.
 - Basic target detection and distance-based sorting.
 
-[unreleased]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.3...HEAD
+[unreleased]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.4...HEAD
+[0.4.4]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.3...0.4.4
 [0.4.3]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.3...0.4.3
 [0.4.3]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.2...0.4.3
 [0.4.2]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.1...0.4.2
