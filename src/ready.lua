@@ -6,7 +6,7 @@
 local animation  = import 'objinfo/animationHelpers.lua'
 -- Navigation
 import 'navigation/collisions.lua'
--- Controls
+-- Gamepad Controls
 local isControlConsumed          = false
 -- ModControl is global so that other scripts can access it
 ModControl                       = "AttackTurbo"
@@ -16,6 +16,17 @@ local BeaconPrevTargetControl    = "MenuLeft"
 local BeaconNextTargetControl    = "MenuRight"
 local BeaconTargetClosestControl = "Select"
 local BeaconInfoControl          = "Cancel"
+
+-- KB Controls
+local kbConfig = config.AccessModControls.KeyboardControls
+local kbBeaconPrevCatControl = kbConfig.PreviousCategory
+local kbBeaconNextCatControl = kbConfig.NextCategory
+local kbBeaconPrevTargetControl = kbConfig.PreviousTarget
+local kbBeaconNextTargetControl = kbConfig.NextTarget
+local kbBeaconTargetClosestControl = kbConfig.TargetFirst
+local kbBeaconInfoControl = kbConfig.SpeakTargetInfo
+local kbBeaconPlayerInfoControl = kbConfig.SpeakPlayerInfo
+local kbBeaconTeleportToTargetControl = kbConfig.TeleportToTarget
 
 local FreezePlayerArgs           = {
     AllowedKeys = {
@@ -136,49 +147,49 @@ end }
 --------------------------------------------------------------------------------
 -- Keyboard controls
 --------------------------------------------------------------------------------
-rom.inputs.on_key_pressed{"Shift OemOpenBrackets", Name = "Beacon: Previous Category", function()
+rom.inputs.on_key_pressed{kbBeaconPrevCatControl, Name = "Beacon: Previous Category", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
         beaconCommands.CycleBeaconCategory(-1)
     end
 end}
 
-rom.inputs.on_key_pressed{"Shift OemCloseBrackets", Name = "Beacon: Next Category", function()
+rom.inputs.on_key_pressed{kbBeaconNextCatControl, Name = "Beacon: Next Category", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
         beaconCommands.CycleBeaconCategory(1)
     end
 end}
 
-rom.inputs.on_key_pressed{"None OemOpenBrackets", Name = "Beacon: Previous Target", function()
+rom.inputs.on_key_pressed{kbBeaconPrevTargetControl, Name = "Beacon: Previous Target", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
         beaconCommands.CycleBeacon(-1)
     end
 end}
 
-rom.inputs.on_key_pressed{"None OemCloseBrackets", Name = "Beacon: Next Target", function()
+rom.inputs.on_key_pressed{kbBeaconNextTargetControl, Name = "Beacon: Next Target", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
         beaconCommands.CycleBeacon(1)
     end
 end}
 
-rom.inputs.on_key_pressed{"None OemPipe", Name = "Beacon: Track Closest", function()
+rom.inputs.on_key_pressed{kbBeaconTargetClosestControl, Name = "Beacon: Track Closest", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
         beaconCommands.CycleBeacon(0)
     end
 end}
 
-rom.inputs.on_key_pressed{"None OemQuotes", Name = "Beacon: Target Info", function()
+rom.inputs.on_key_pressed{kbBeaconInfoControl, Name = "Beacon: Target Info", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
             TolkSpeak(info.SummarizeUnitInfo(beaconState.targetId, true), true)
     end
 end}
 
-rom.inputs.on_key_pressed{"None P", Name = "Beacon: Hero Info", function()
+rom.inputs.on_key_pressed{kbBeaconPlayerInfoControl, Name = "Beacon: Hero Info", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
             TolkSpeak(info.SummarizeUnitInfo(CurrentRun.Hero.ObjectId, true), true)
     end
 end}
 
-rom.inputs.on_key_pressed{"None O", Name = "Beacon: Hero Info", function()
+rom.inputs.on_key_pressed{kbBeaconTeleportToTargetControl, Name = "Beacon: Teleport", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
             beaconCommands.TeleportToBeacon()
     end

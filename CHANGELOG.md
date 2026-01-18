@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- You can now change the mod's keyboard controls from [config.AccessModControls.KeyboardControls]. Check the readme to see how it works
+
+- It is now possible to modify what information appears when actively getting target info, such as by pressing lt + cast, or ' on the keyboard. This can be done in config.AccessDisplay.LongInfoArray. Note that this array also applies to player information. 
+
+### Changed
+
+- - Actively getting target info using the  speak target info control now speaks distance by default. 
+
+### Fixed
+
+- Fixed a bug where the effect description announcements config entry was being ignored.
+
 ## [0.4.4] - 2026-01-12
 
 ### Fixed

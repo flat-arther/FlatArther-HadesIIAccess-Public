@@ -52,7 +52,7 @@ function M.GetItemInfo(Id, showDetails)
     if showDetails == nil then showDetails = false end 
 
     local parts = {}
-
+local rawName = GetName({ Id = Id})
     if item.ResourceCosts then
         local costStrings = {}
         for resourceName, resourceAmount in pairs(item.ResourceCosts) do

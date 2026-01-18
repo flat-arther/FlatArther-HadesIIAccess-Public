@@ -16,11 +16,21 @@ return {
     AccessModNavigation = {
         PlayObstacleCollisionSounds = false, -- No sound for now
         PlayWallCollisionSounds = true,
-        UseNavRadar = false, -- Unfinished
         WallCollisionSound = "{0381e8ca-ae3a-41ea-99b2-cc64dc0fff55}"
     },
     AccessModControls = {
         DOUBLE_TAP_THRESHOLD = 0.25, -- The timing window for how fast you can double tap certain controls to which this is applicable
+        -- Keyboard controls are the only ones that are configurable. This is a limitation of how controler inputs work, in that there is no way to register custom controls. 
+        KeyboardControls = {
+            PreviousCategory = "Shift OemOpenBrackets",
+            NextCategory = "Shift OemCloseBrackets",
+            PreviousTarget = "None OemOpenBrackets",
+            NextTarget = "None OemCloseBrackets",
+            TargetFirst = "None OemPipe",
+            SpeakTargetInfo = "None OemQuotes",
+            SpeakPlayerInfo = "None P",
+            TeleportToTarget = "None O",
+        },
     },
     -- Global Beacon Settings
     TrackingBeaconGlobal = {
