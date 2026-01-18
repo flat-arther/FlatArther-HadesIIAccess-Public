@@ -35,7 +35,7 @@ function M.GetEffectString(objectId, effect, readDesc, readDuration)
     if readDuration and ed.Duration and ed.Duration > 0 then
         s = s .. " for " .. string.format("%.2f", ed.Duration) .. " seconds"
     end
-    if readDesc and ed.Desc and ed.Desc ~= "" then
+    if readDesc and config.AccessDisplay.DescribeStatusEffects and ed.Desc and ed.Desc ~= "" then
         s = s .. ": " .. ed.Desc
     end
     return s

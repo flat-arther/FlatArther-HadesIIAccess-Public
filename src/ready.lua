@@ -110,7 +110,7 @@ end }
 
 OnControlPressed { BeaconInfoControl, function(triggerArgs)
     if beaconState.isModLayer then
-        info.SpeakTargetInfo(beaconState.targetId)
+        TolkSpeak(info.SummarizeUnitInfo(beaconState.targetId, true), true)
     end
 end }
 
@@ -122,7 +122,7 @@ end }
 
 OnControlPressed { "Codex", function(triggerArgs)
     if beaconState.isModLayer then
-        info.SpeakTargetInfo(CurrentRun.Hero.ObjectId)
+        TolkSpeak(info.SummarizeUnitInfo(CurrentRun.Hero.ObjectId, true), true)
     end
 end }
 
@@ -168,13 +168,13 @@ end}
 
 rom.inputs.on_key_pressed{"None OemQuotes", Name = "Beacon: Target Info", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
-            info.SpeakTargetInfo(beaconState.targetId)
+            TolkSpeak(info.SummarizeUnitInfo(beaconState.targetId, true), true)
     end
 end}
 
 rom.inputs.on_key_pressed{"None P", Name = "Beacon: Hero Info", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
-            info.SpeakTargetInfo(CurrentRun.Hero.ObjectId)
+            TolkSpeak(info.SummarizeUnitInfo(CurrentRun.Hero.ObjectId, true), true)
     end
 end}
 

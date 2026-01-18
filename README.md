@@ -1,53 +1,35 @@
 # Introduction
 
 This mod is designed to assist blind or visually impaired players navigate hades II better, to help players locate enemies, interactibles, NPCs, breakables, and exits. It includes the following features:
-•
-A tracking Beacon: Sound pings that change based on whether a target is in front of or behind you.
-•
-Animation Announcements: Realtime report of tracked targets' animations, useful to learn enemy patterns.
-•
-Navigation Tools: Optional wall collision sounds, as well as teleportation to targets (Experimental).
-•
-Target info announcements: Announces the selected target's distance and status
+-A tracking Beacon: Sound pings that change based on whether a target is in front of or behind you.
+-Animation Announcements: Realtime report of tracked targets' animations, useful to learn enemy patterns.
+-Navigation Tools: Optional wall collision sounds, as well as teleportation to targets (Experimental).
+-Target info announcements: Announces the selected target's distance and status
 
 # Usage
 
 ## Controller 
 
 Mod features are accessed via a Modifier Layer. You hold down the modifier key to "freeze" your character and use other buttons to scan the room.
-Controls:
-•
-Modifier Key: Hold LT to activate the mod layer.
-•
-Cycle Category: While holding the modifier, press Attack (X / Square) for previous category, and special attack (Y / Triangle) for next
-•
-Cycle Targets: While holding the modifier, press Special interact (LB / L1) or Interact (RB / R1) for previous and next respectively
-•
-Track most important or closest: Press Dash (Cross / a) while holding the modifier button. Keep in mind that this behaves differently depending on whether or not smart tracking is enabled. See config section for details.
-•
-Get Target Info: Press Cast (Circle / b) while holding modifier. Speaks name, health, distance.
-•
-Teleport to Target: Press Inventory (Dpad right) (Only works if no enemies are active).
-•
-Player Info: Press Codex(Dpad up) while holding modifier.
-•
-Stop Tracking: Double-tap the Modifier button (LT).
+###Controls:
+-Modifier Key: Hold LT to activate the mod layer.
+-Cycle Category: While holding the modifier, press Attack (X / Square) for previous category, and special attack (Y / Triangle) for next
+-Cycle Targets: While holding the modifier, press Special interact (LB / L1) or Interact (RB / R1) for previous and next respectively
+-Track most important or closest: Press Dash (Cross / a) while holding the modifier button. Keep in mind that this behaves differently depending on whether or not sort by score is enabled. See config section for details.
+-Get Target Info: Press Cast (Circle / b) while holding modifier. Speaks name, health, distance.
+-Teleport to Target: Press Inventory (Dpad right) (Only works if no enemies are active).
+-Player Info: Press Codex(Dpad up) while holding modifier.
+-Stop Tracking: Double-tap the Modifier button (LT).
 
-## Keyboard controls
+### Keyboard controls
 
 These do not require you to hold any modifiers.
-•
-Prev/Next Target: [ and ]
-•
-Prev/Next Category: Shift + [ and Shift + ]
-•
-Track Closest: | 
-•
-Target Info: ' '
-•
-Player Info: P
-•
-Teleport to Target: O, (Only outside combat)
+-Prev/Next Target: [ and ]
+-Prev/Next Category: Shift + [ and Shift + ]
+-Track Closest | most important: \ depends on if sort by score is enabled
+-Target Info: ' '
+-Player Info: P
+-Teleport to Target: O, (Only outside combat)
 
 # Configuration (config.cfg)
 
@@ -121,7 +103,7 @@ DestinationTypes: Adds specific internal object names (like ShipWheels) to a cat
 
 # Target Scoring System (For the curious)
 
-If smart tracking is enabled, the Tracking Beacon uses a dynamic scoring system to prioritize objects and enemies based on their immediate importance to gameplay. Instead of simply tracking the closest target, it calculates a score by evaluating the following factors:
+If sort by score is enabled, the Tracking Beacon uses a dynamic scoring system to prioritize objects and enemies based on their immediate importance to gameplay. Instead of simply tracking the closest target, it calculates a score by evaluating the following factors:
 
 ## Enemies and NPCs
 

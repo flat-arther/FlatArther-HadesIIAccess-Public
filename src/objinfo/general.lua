@@ -49,7 +49,7 @@ end
 function M.GetItemInfo(Id, showDetails)
     local item = (MapState.ActiveObstacles and MapState.ActiveObstacles[Id]) or (LootObjects and LootObjects[Id])
     if not item then return nil end
-    if showDetails == nil then showDetails = false end -- Going to add a way to get item descriptions here later
+    if showDetails == nil then showDetails = false end 
 
     local parts = {}
 
@@ -243,6 +243,20 @@ function M.GetDoorInfo(Id, showDetails)
     return table.concat(parts, ", ")
 end
 
+function M.GetUnitManaString(id)
+    local unit = ActiveEnemies[id]
+    if CurrentRun and CurrentRun.Hero and id == CurrentRun.Hero.ObjectId then
+        unit = CurrentRun.Hero
+    end
+    if not unit then return nil end
+    local mana = nil
+    if unit.Mana and unit.MaxMana then
+            mana = unit.Mana .. " of " .. unit.MaxMana .. " magic"
+        end
+
+    return mana
+end
+
 function M.GetUnitArmorString(id)
     local unit = ActiveEnemies[id]
     if CurrentRun and CurrentRun.Hero and id == CurrentRun.Hero.ObjectId then
@@ -311,6 +325,63 @@ function M.GetHeroLastStandString()
         .. " death defiances"
 end
 
+function M.GetDescriptionInfo(id)
+    if not CurrentRun or not CurrentRun.Hero then return nil end
+    local Hero = CurrentRun.Hero
+    local unit = ActiveEnemies[id]
+    if id == Hero.ObjectId then unit = Hero end
+
+    local obstacle = (MapState.ActiveObstacles and MapState.ActiveObstacles[id]) or (LootObjects and LootObjects[id])
+    local door = (MapState.OfferedExitDoors and MapState.OfferedExitDoors[id]) or (MapState.ShipWheels and MapState.ShipWheels[id])
+    local weapon = MapState.WeaponKits and MapState.WeaponKits[id]
+    local gardenPlot = GameState.GardenPlots and GameState.GardenPlots[id]
+    local object = unit or obstacle or door or weapon
+    if not object then
+        return nil
+    end
+
+local description = nil
+
+    if not description and CodexData then
+        local keys = {}
+        table.insert(keys, GetName({ Id = object.ObjectId }))
+        if object.Name then table.insert(keys, object.Name) end
+        if object.GenusName and object.GenusName ~= object.Name then
+            table.insert(keys, object.GenusName)
+        end
+
+        for _, key in ipairs(keys) do
+            for _, chapter in pairs(CodexData) do
+                local entry = chapter.Entries and chapter.Entries[key]
+                if entry and entry.Entries then
+                    for _, sub in ipairs(entry.Entries) do
+                        local unlocked =
+                            (SessionState and SessionState.CodexDebugUnlocked)
+                            or sub.UnlockGameStateRequirements == nil
+                            or IsGameStateEligible(
+                                CurrentRun,
+                                sub.UnlockGameStateRequirements
+                            )
+
+                        if unlocked and sub.Text then
+                            description = GetDisplayName({ Text = sub.Text })
+                            break
+                        end
+                    end
+                end
+                if description then break end
+            end
+            if description then break end
+        end
+    end
+
+    if description then
+        description = description :gsub("{.-}", "") :gsub("\\n", " ")
+    end
+return description
+end
+
+
 -- This helper function is credited to Lirin from his Blind_Accessibility mod: https://github.com/Lirin111/Hades2BlindAccessibility
 local function GetChallengeDisplayName(rawName)
     if not rawName then
@@ -370,12 +441,24 @@ function M.GetObjectName(id)
     return name
 end
 
-function M.SummarizeUnitInfo(id)
+function M.SummarizeUnitInfo(id, long)
     if not id or not CurrentRun or not CurrentRun.Hero then
         return ""
     end
-    local hp = M.GetUnitHealthString(id, true)
-
+    if long == nil then
+        long = false
+    end
+    local heroId = CurrentRun.Hero.ObjectId
+local ls = nil
+    local hp = nil
+    local unitDistance = nil
+        if id == heroId then
+            ls = M.GetHeroLastStandString()
+            hp = M.GetUnitHealthString(id)
+        else
+            hp = M.GetUnitHealthString(id, true)
+            unitDistance = tostring(math.floor(GetDistance({ Id = CurrentRun.Hero.ObjectId, DestinationId = id }) / (SCALE_FACTOR or 100))) .. " units away"
+        end
 
     local IgnoreIcons = true
 
@@ -385,18 +468,26 @@ function M.SummarizeUnitInfo(id)
         Name = GetDisplayName({ Text = objName, IgnoreIcons = IgnoreIcons }) or "Unknown",
         Armor = M.GetUnitArmorString(id),
         Health = hp,
-        Dist = tostring(math.floor(GetDistance({ Id = CurrentRun.Hero.ObjectId, DestinationId = id }) / (SCALE_FACTOR or 100))) .. " units away",
+        Mana = M.GetUnitManaString(id),
+        LastStand = ls,
+        Dist = unitDistance,
         Anim = animation.GetAnimation({ Id = id, TranslatedOnly = true }),
-        Effects = effectHelpers.GetEffectsString(id, false, false),
+        Effects = effectHelpers.GetEffectsString(id, long, long),
         DoorInfo = M.GetDoorInfo(id, false),
         ItemInfo = M.GetItemInfo(id, false),
         WeaponInfo = M.GetWeaponInfo(id),
         GardenInfo = M.GetGardenPlotInfo(id),
+        Description = M.GetDescriptionInfo(id),
     }
 
-    local order = config and config.AccessDisplay and config.AccessDisplay.InfoArray or
-        { "DoorInfo", "Name", "GardenInfo", "ItemInfo", "WeaponInfo", "Armor", "Health", "Dist", "Anim", "Effects" }
+    local order = nil
+if long then
+    order = (config and config.AccessDisplay and config.AccessDisplay.LongInfoArray)
+else
+    order = (config and config.AccessDisplay and config.AccessDisplay.InfoArray)
+end
 
+order = order or { "DoorInfo", "Name", "GardenInfo", "ItemInfo", "WeaponInfo", "Armor", "Health", "Dist", "Anim", "Effects", "Description" }
     local parts = {}
 
     for _, key in ipairs(order) do
@@ -419,131 +510,11 @@ function M.SummarizeUnitInfo(id)
             table.insert(parts, str)
         end
     end
-
+if #parts > 0 then
     return table.concat(parts)
+else
+    return "No information found"
 end
-
-function M.SpeakTargetInfo(id)
-    if not CurrentRun or not CurrentRun.Hero then
-        TolkSpeak("No target selected.", true)
-        return
-    end
-
-    if not id or not IdExists({ Id = id }) then
-        TolkSpeak("No target selected.", true)
-        return
-    end
-
-    local Hero = CurrentRun.Hero
-    local unit = ActiveEnemies[id]
-    if id == Hero.ObjectId then unit = Hero end
-
-    local obstacle = (MapState.ActiveObstacles and MapState.ActiveObstacles[id]) or (LootObjects and LootObjects[id])
-    local door = (MapState.OfferedExitDoors and MapState.OfferedExitDoors[id]) or
-    (MapState.ShipWheels and MapState.ShipWheels[id])
-    local weapon = MapState.WeaponKits and MapState.WeaponKits[id]
-    local gardenPlot = GameState.GardenPlots and GameState.GardenPlots[id]
-    local object = unit or obstacle or door or weapon
-    if not object then
-        TolkSpeak("Target unknown.", true)
-        return
-    end
-
-    local output = {}
-
-
-    if unit then
-        table.insert(output, M.GetUnitArmorString(unit.ObjectId))
-        if unit.Health and unit.MaxHealth then
-            if Hero.ObjectId == unit.ObjectId then
-                table.insert(output, M.GetUnitHealthString(Hero.ObjectId))
-            else
-                table.insert(output, M.GetUnitHealthString(unit.ObjectId, true))
-            end
-        end
-
-        if unit.Mana and unit.MaxMana then
-            table.insert(output, unit.Mana .. " of " .. unit.MaxMana .. " magic")
-        end
-
-        if Hero.ObjectId == unit.ObjectId then
-            local ls = M.GetHeroLastStandString()
-            local currentMoney = GetResourceAmount("Money")
-            if ls ~= "" then table.insert(output, ls) end
-            if currentMoney > 0 then table.insert(output,
-                    currentMoney .. " " .. GetDisplayName({ Text = "Currency", IgnoreIcons = true })) end
-        end
-
-        local effectText = effectHelpers.GetEffectsString(unit.ObjectId)
-        if effectText and effectText ~= "" then
-            table.insert(output, "Effects: " .. effectText)
-        end
-    end
-
-
-    if door then
-        table.insert(output, M.GetDoorInfo(id))
-    end
-
-    if obstacle then
-        table.insert(output, M.GetItemInfo(id))
-    end
-
-    if weapon then
-        table.insert(output, M.GetWeaponInfo(id))
-    end
-
-    if gardenPlot then
-        table.insert(output, M.GetGardenPlotInfo(id))
-    end
-    local description = nil
-
-    if not description and CodexData then
-        local keys = {}
-        table.insert(keys, GetName({ Id = object.ObjectId }))
-        if object.Name then table.insert(keys, object.Name) end
-        if object.GenusName and object.GenusName ~= object.Name then
-            table.insert(keys, object.GenusName)
-        end
-
-        for _, key in ipairs(keys) do
-            for _, chapter in pairs(CodexData) do
-                local entry = chapter.Entries and chapter.Entries[key]
-                if entry and entry.Entries then
-                    for _, sub in ipairs(entry.Entries) do
-                        local unlocked =
-                            (SessionState and SessionState.CodexDebugUnlocked)
-                            or sub.UnlockGameStateRequirements == nil
-                            or IsGameStateEligible(
-                                CurrentRun,
-                                sub.UnlockGameStateRequirements
-                            )
-
-                        if unlocked and sub.Text then
-                            description = GetDisplayName({ Text = sub.Text })
-                            break
-                        end
-                    end
-                end
-                if description then break end
-            end
-            if description then break end
-        end
-    end
-
-    if description then
-        description = description
-            :gsub("{.-}", "")
-            :gsub("\\n", " ")
-        table.insert(output, description)
-    end
-
-
-    if #output > 0 then
-        TolkSpeak(table.concat(output, ". "), true)
-    else
-        TolkSpeak("No information found", true)
-    end
 end
 
 return M
