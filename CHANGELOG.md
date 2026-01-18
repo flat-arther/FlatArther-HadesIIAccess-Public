@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-01-18
+
 ### Added
 
 - You can now change the mod's keyboard controls from [config.AccessModControls.KeyboardControls]. Check the readme to see how it works
@@ -168,7 +170,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation of the accessibility tracking beacon.
 - Basic target detection and distance-based sorting.
 
-[unreleased]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.4...HEAD
+[unreleased]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.5.0...HEAD
+[0.5.0]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.4...0.5.0
 [0.4.4]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.3...0.4.4
 [0.4.3]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.3...0.4.3
 [0.4.3]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.2...0.4.3
