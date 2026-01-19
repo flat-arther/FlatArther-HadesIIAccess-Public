@@ -299,6 +299,15 @@ function M.GetUnitHealthString(Id, Percentage, Short)
     return math.floor(unit.Health) .. " of " .. math.floor(unit.MaxHealth) .. suffix
 end
 
+function M.GetHeroMoneyString()
+if not CurrentRun or not CurrentRun.Hero then return nil end
+local currentMoney = GetResourceAmount("Money")
+if currentMoney > 0 then
+    return currentMoney .. " " .. GetDisplayName({ Text = "Currency", IgnoreIcons = true })
+end
+return nil
+end
+
 function M.GetHeroLastStandString()
     if not CurrentRun or not CurrentRun.Hero then
         return ""
@@ -452,9 +461,11 @@ function M.SummarizeUnitInfo(id, long)
 local ls = nil
     local hp = nil
     local unitDistance = nil
+    local money = nil
         if id == heroId then
             ls = M.GetHeroLastStandString()
             hp = M.GetUnitHealthString(id)
+            money = M.GetHeroMoneyString()
         else
             hp = M.GetUnitHealthString(id, true)
             unitDistance = tostring(math.floor(GetDistance({ Id = CurrentRun.Hero.ObjectId, DestinationId = id }) / (SCALE_FACTOR or 100))) .. " units away"
@@ -470,6 +481,7 @@ local ls = nil
         Health = hp,
         Mana = M.GetUnitManaString(id),
         LastStand = ls,
+        Gold = money,
         Dist = unitDistance,
         Anim = animation.GetAnimation({ Id = id, TranslatedOnly = true }),
         Effects = effectHelpers.GetEffectsString(id, long, long),

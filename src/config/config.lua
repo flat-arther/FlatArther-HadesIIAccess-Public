@@ -1,4 +1,5 @@
 return {
+    version = 0.1,
     -- Mod display settings: how things get announced.
     AccessDisplay = {
         AnnounceAnimations = true,
@@ -9,7 +10,7 @@ return {
         -- Use the following arrays to sort how you would like info and categories to be displayed, and which ones appear on their respective lists. Note that you can easily break this should you misspell something. 
         InfoArray = {"Armor", "Health", "Name", "DoorInfo", "ItemInfo", "WeaponInfo", "GardenInfo", "Anim", "Dist", "Effects" },
         -- this next array is used when getting info manually, such as when pressing lt + b / circle, or lt + dpad up for player info
-        LongInfoArray = {"Dist", "Armor", "Health", "Mana", "LastStand", "DoorInfo", "ItemInfo", "WeaponInfo", "GardenInfo", "Anim", "Effects", "Description" },
+        LongInfoArray = {"Dist", "Armor", "Health", "Mana", "LastStand", "Gold", "DoorInfo", "ItemInfo", "WeaponInfo", "GardenInfo", "Anim", "Effects", "Description" },
         CategoriesArray = { "Interactibles", "EnemyTeam", "NPCs", "ConsumableItems", "Loot", "HeroTeam", "Terrain", "Traps", "Familiars", "ExitDoors" },
     },
     -- Navigation config

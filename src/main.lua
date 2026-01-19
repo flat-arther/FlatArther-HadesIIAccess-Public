@@ -17,11 +17,12 @@ modutil = mods['SGG_Modding-ModUtil']
 chalk   = mods['SGG_Modding-Chalk']
 reload  = mods['SGG_Modding-ReLoad']
 
+
 ------------------------------------------------------------
 -- Config
 ------------------------------------------------------------
-
-config = chalk.auto 'config.lua'
+config = chalk.auto 'config/config.lua'
+raw_user_config_version = config.version or 0
 
 ------------------------------------------------------------
 -- Static / data
@@ -45,12 +46,14 @@ beaconAudio    = import 'beacon/audio.lua'
 beaconMath     = import 'beacon/math.lua'
 beaconTargets = import 'beacon/targets.lua'
 info = import 'objinfo/general.lua'
-
+-- Utility logic
+import 'utils.lua'
 
     -- Input hooks / animation wraps
 import 'ready.lua'
+-- Update config
+import 'config/configUpdator.lua'
 end
-
 
 ------------------------------------------------------------
 -- Beacon audio loop
