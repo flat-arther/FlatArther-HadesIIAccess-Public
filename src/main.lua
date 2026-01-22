@@ -24,6 +24,9 @@ reload  = mods['SGG_Modding-ReLoad']
 config = chalk.auto 'config/config.lua'
 raw_user_config_version = config.version or 0
 
+-- Utility logic
+import 'utils.lua'
+
 ------------------------------------------------------------
 -- Static / data
 ------------------------------------------------------------
@@ -34,6 +37,7 @@ import 'data/StaticIdDisplayNames.lua'
 
 -- Global state stuff
 DOUBLE_TAP_THRESHOLD = config.AccessModControls.DOUBLE_TAP_THRESHOLD or 0.25
+controlHoldTimer = config.AccessModControls.controlHoldTimer or 0.25
 beaconState    = import 'beacon/state.lua'
 local beaconAudio
 local beaconMath
@@ -46,8 +50,6 @@ beaconAudio    = import 'beacon/audio.lua'
 beaconMath     = import 'beacon/math.lua'
 beaconTargets = import 'beacon/targets.lua'
 info = import 'objinfo/general.lua'
--- Utility logic
-import 'utils.lua'
 
     -- Input hooks / animation wraps
 import 'ready.lua'
@@ -96,29 +98,11 @@ end
 -- Disable beacon layer in case control release is not registered or a screen is open
 beaconState:TrackingCleanup()
 
-            local enabled = config and config.TrackingBeaconGlobal and config.TrackingBeaconGlobal.Toggle
-
-            local hero = CurrentRun and CurrentRun.Hero
-            local targetId = beaconState.targetId
-
-            if enabled and hero and targetId and IdExists({ Id = targetId }) and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
-                local dist = GetDistance({ Id = hero.ObjectId, DestinationId = targetId }) or 0
-
-                local interval = beaconMath.ComputeBeaconInterval(dist)
-                local facing   = beaconMath.GetFacingDotProduct({ TargetId = targetId, IsAlwaysNorth = true})
-
-                local sound
-                if facing > 0.3 then
-                    sound = beaconAudio.front
-                elseif facing < -0.3 then
-                    sound = beaconAudio.back
-                else
-                    sound = beaconAudio.normal
-                end
-if CheckCooldown("TrackingBeaconSound", interval, true) then
-                beaconAudio.PlayBeaconSound(sound, targetId)
-end
-        end
+-- handle control holds
+beaconState:HandleControlHolds()
+-- Handle beacon audio
+            beaconAudio.DoBeaconSound()
+            beaconAudio.DoPermaSoundMarkers()
             wait(0.02, THREAD_NAME)
         end
     end)

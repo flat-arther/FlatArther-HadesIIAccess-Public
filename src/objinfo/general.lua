@@ -4,6 +4,7 @@ local animation = import 'objinfo/animationHelpers.lua'
 local effectHelpers = import 'objinfo/effectHelpers.lua'
 import 'data/replacementNames.lua'
 
+local SCALE_FACTOR = config.TrackingBeaconGlobal.ScaleFactor or 100.0
 function M.GetGardenPlotInfo(id)
     local plot = GameState.GardenPlots and GameState.GardenPlots[id]
     if not plot then return nil end

@@ -62,3 +62,5 @@ StaticIdDisplayNames = {
   [776127] = "Door",
   [792347] = "GodBoon",
 }
+
+NameToStaticId = SwapPairs(StaticIdDisplayNames)

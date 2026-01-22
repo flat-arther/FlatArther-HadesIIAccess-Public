@@ -2,15 +2,13 @@ local info = import 'objinfo/general.lua'
 
 local M = {}
 
--- config constants 
+-- config
 local BeaconCategoryTables = config.TrackingBeaconTargetCategories
 local beaconCategories = config.AccessDisplay.CategoriesArray
 
 
-local SCALE_FACTOR = config.TrackingBeaconGlobal.ScaleFactor or 100.0
-local BEACON_MIN_INTERVAL = config.TrackingBeaconGlobal.MinInterval or 0.25
-local BEACON_MAX_INTERVAL = config.TrackingBeaconGlobal.MaxInterval or 0.75
-local BEACON_MAX_DISTANCE = config.TrackingBeaconGlobal.MaxDistance or 1200
+
+
 
 ------------------------------------------------------------
 -- category cycling
@@ -38,7 +36,7 @@ end
 -- sound toggle
 ------------------------------------------------------------
 
-function M.ToggleBeaconSound()
+function M.ToggleBeaconSound(args)
     local toggle = not config.TrackingBeaconGlobal.Toggle
     config.TrackingBeaconGlobal.Toggle = toggle
     TolkSpeak(toggle and "Beacon on" or "Beacon off")
@@ -87,9 +85,38 @@ if interruptSpeech == nil then interruptSpeech = true end
         TolkSpeak(info.SummarizeUnitInfo(id), interruptSpeech)
 end
 
+function M.StopTracking()
+    if beaconState.targetId then
+    beaconState:ResetTarget(false)
+            TolkSpeak("Tracking stopped", true)
+    else
+        TolkSpeak("Currently tracking nothing", true)
+    end
+end
+function M.TogglePermaBeaconPin(args)
+    local id = beaconState.targetId
+    if not id or not IdExists({ Id = id}) then return end
+    if beaconTargets.IsBeaconObjectPinned(id) then
+        if not beaconTargets.UnpinPermaBeaconObject(id) then
+            TolkSpeak("Invalid target")
+        else
+        TolkSpeak("Permanent beacon off")
+        end
+    else
+        if not beaconTargets.PinPermaBeaconObject(id) then
+            TolkSpeak("Invalid target")
+        else
+        TolkSpeak("Permanent beacon on")
+        end
+end
+end
+------------------------------------------------------------
+-- Teleporting to beacon
+------------------------------------------------------------
 function M.TeleportToBeacon()
     if IsInputAllowed({}) and IsEmpty(ActiveScreens) then
         local target = beaconState.targetId
+        local hero = CurrentRun.Hero
         if not target or not IdExists({ Id = target }) then
             TolkSpeak("No target selected", true)
             return
@@ -100,6 +127,10 @@ function M.TeleportToBeacon()
             return
         end
 
+        if hero.JoinedInArtemisSong or hero.JoinedInWitchcraft then
+            TolkSpeak("You are busy", true)
+            return
+        end
         local offsetX = 0
         local offsetY = -120
 

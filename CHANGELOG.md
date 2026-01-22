@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- You can now add permanent beacons to objects to make them beep without having to track them. Useful with familiars
+- You can now mute or unmute beacon sounds. This includes those of the permanent beacon
+- For controler users: Added a system for control holds to perform alternative actions, so now I have more options for controls to use in for if new features get added. You can configure how long you have to hold buttons for in [AccessModControls.controlHoldTimer] set to 0.25 by default
+- Added the option to override user config entries for necessary resets. This shouldn't happen often, but know that it is necessary for this particular update. 
+- For anyone wanting to mess around with the sounds, The repository now includes the fmod project used to create the  audiobank. The data folder also contains the GUIDs.txt. 
+
+### Changed
+- This update will reset the [AcccessDisplay.LongInfoArray] config entry to defaults. Apologies for this, but it is necessary. 
+
+### Fixed
+- You should no longer be able to teleport while you are concocting witchcraft or singing with Artemis
+- The amount of gold crowns you have now appears properly when getting player info. 
+
 ## [0.5.0] - 2026-01-18
 
 ### Added

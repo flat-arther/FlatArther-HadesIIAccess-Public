@@ -1,0 +1,8 @@
+{1c869688-0ef9-4e93-8c2b-8eef7c31f91b} bank:/tracking_beacon
+{cb919672-4850-46ed-b501-0ba4f9b515ed} event:/beacon_high
+{1463e33d-d26e-4974-a53d-f01ef54357ba} event:/beacon_low
+{40f54a8d-17a4-4d33-b03e-6fe020dac116} event:/beacon_normal
+{d5d100a1-3424-4580-83c2-1ad7f317260a} event:/marker_high
+{0c98f543-3e48-417f-b357-92983dfaeadd} event:/marker_low
+{f7cda469-1321-4ef7-9222-d6cc027541a4} event:/marker_normal
+{0381e8ca-ae3a-41ea-99b2-cc64dc0fff55} event:/wall_hit

@@ -11,7 +11,7 @@ return {
         InfoArray = {"Armor", "Health", "Name", "DoorInfo", "ItemInfo", "WeaponInfo", "GardenInfo", "Anim", "Dist", "Effects" },
         -- this next array is used when getting info manually, such as when pressing lt + b / circle, or lt + dpad up for player info
         LongInfoArray = {"Dist", "Armor", "Health", "Mana", "LastStand", "Gold", "DoorInfo", "ItemInfo", "WeaponInfo", "GardenInfo", "Anim", "Effects", "Description" },
-        CategoriesArray = { "Interactibles", "EnemyTeam", "NPCs", "ConsumableItems", "Loot", "HeroTeam", "Terrain", "Traps", "Familiars", "ExitDoors" },
+        CategoriesArray = { "Interactibles", "EnemyTeam", "NPCs", "ConsumableItems", "Loot", "HeroTeam", "Terrain", "Traps", "Familiars", "ExitDoors" , "PermaBeaconObjects"},
     },
     -- Navigation config
     AccessModNavigation = {
@@ -21,6 +21,7 @@ return {
     },
     AccessModControls = {
         DOUBLE_TAP_THRESHOLD = 0.25, -- The timing window for how fast you can double tap certain controls to which this is applicable
+        controlHoldTimer = 0.25, -- How long (in seconds) you have to hold controls for actions that require it
         -- Keyboard controls are the only ones that are configurable. This is a limitation of how controler inputs work, in that there is no way to register custom controls. 
         KeyboardControls = {
             PreviousCategory = "Shift OemOpenBrackets",
@@ -31,6 +32,9 @@ return {
             SpeakTargetInfo = "None OemQuotes",
             SpeakPlayerInfo = "None P",
             TeleportToTarget = "None O",
+            StopTracking = "None Back",
+            ToggleBeaconSounds = "Shift Back",
+            TogglePermanentBeacon = "Shift OemPipe",
         },
     },
     -- Global Beacon Settings
@@ -42,9 +46,12 @@ return {
         -- Max distance for beacon sound interval calculation (1200 by default)
         MaxDistance = 1200,
 
-        -- Minimum and maximum interval (in seconds) that the beacon sound can play.
+        -- Minimum and maximum interval (in seconds) for how often the beacon sound can play.
         MinInterval = 0.25,
         MaxInterval = 0.75,
+
+        -- Use distance to calculate how fast the permanent beacon sound plays, off by default
+        UseDistanceForPermanentBeaconInterval = false,
 
         -- Sorting: True means targets are scored then sorted based on which is most important. False sorts by distance
         SortByScore = true,
@@ -62,9 +69,12 @@ return {
 
     -- Sound event paths/GUIDs used for the beacon
     TrackingBeaconSounds = {
-        Normal = "{40f54a8d-17a4-4d33-b03e-6fe020dac116}",
-        Front = "{cb919672-4850-46ed-b501-0ba4f9b515ed}",
-        Behind = "{1463e33d-d26e-4974-a53d-f01ef54357ba}",
+        BeaconNormal = "{40f54a8d-17a4-4d33-b03e-6fe020dac116}",
+        BeaconFront = "{cb919672-4850-46ed-b501-0ba4f9b515ed}",
+        BeaconBehind = "{1463e33d-d26e-4974-a53d-f01ef54357ba}",
+        PermaBeaconNormal = "{f7cda469-1321-4ef7-9222-d6cc027541a4}",
+        PermaBeaconFront = "{d5d100a1-3424-4580-83c2-1ad7f317260a}",
+        PermaBeaconBehind = "{0c98f543-3e48-417f-b357-92983dfaeadd}",
     },
 
     -- Target Categories
@@ -167,6 +177,10 @@ return {
             StopsUnits = false,
             DestinationTypes = {"WeaponKit01", "FamiliarKit", "ShipWheels", "NightMirror", "HadesFountain", "WitchHut", "PalaceForcefield"},
             LinkedCategories = {"Loot", "NPCs", "ConsumableItems", "ExitDoors",}
+        },
+        PermaBeaconObjects = {
+            DisplayName = "Active beacon objects",
+            DestinationTypes = {"PermaBeaconTargets"},
         },
     },
 }

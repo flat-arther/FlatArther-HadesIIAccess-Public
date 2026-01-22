@@ -16,6 +16,8 @@ local BeaconPrevTargetControl    = "MenuLeft"
 local BeaconNextTargetControl    = "MenuRight"
 local BeaconTargetClosestControl = "Select"
 local BeaconInfoControl          = "Cancel"
+local BeaconToggleControl = "MenuInfo"
+local PermaBeaconToggleControl = "Cancel"
 
 -- KB Controls
 local kbConfig = config.AccessModControls.KeyboardControls
@@ -27,6 +29,9 @@ local kbBeaconTargetClosestControl = kbConfig.TargetFirst
 local kbBeaconInfoControl = kbConfig.SpeakTargetInfo
 local kbBeaconPlayerInfoControl = kbConfig.SpeakPlayerInfo
 local kbBeaconTeleportToTargetControl = kbConfig.TeleportToTarget
+local kbBeaconStopTrackingControl = kbConfig.StopTracking
+local kbBeaconToggleBeaconControl = kbConfig.ToggleBeaconSounds
+local kbBeaconTogglePermaBeaconPin = kbConfig.TogglePermanentBeacon
 
 local FreezePlayerArgs           = {
     AllowedKeys = {
@@ -76,9 +81,7 @@ OnControlReleased { ModControl, function(triggerArgs)
         local now = _worldTimeUnmodified
         local prev = beaconState.lastControlRelease[ModControl]
         if prev and (now - prev) <= DOUBLE_TAP_THRESHOLD then
-            -- double-tap detected: reset tracking state
-            beaconState:ResetTarget(false)
-            TolkSpeak("Tracking stopped", true)
+            beaconCommands.StopTracking()
             beaconState.lastControlRelease[ModControl] = nil
             return
         end
@@ -95,8 +98,12 @@ OnControlPressed { BeaconPrevTargetControl, function(triggerArgs)
 end }
 
 
-OnControlPressed { BeaconTargetClosestControl, function(triggerArgs)
+OnControlReleased { BeaconTargetClosestControl, function(triggerArgs)
     if beaconState.isModLayer then
+        if beaconState.consumedControls[BeaconTargetClosestControl] then
+        beaconState.consumedControls[BeaconTargetClosestControl] = false
+        return
+    end
         beaconCommands.CycleBeacon(0)
     end
 end }
@@ -107,19 +114,37 @@ OnControlPressed { BeaconNextTargetControl, function(triggerArgs)
     end
 end }
 
-OnControlPressed { BeaconPrevCatControl, function(triggerArgs)
+OnControlReleased { BeaconPrevCatControl, function(triggerArgs)
     if beaconState.isModLayer then
+        if beaconState.consumedControls[BeaconPrevCatControl] then
+        beaconState.consumedControls[BeaconPrevCatControl] = false
+        return
+    end
         beaconCommands.CycleBeaconCategory(-1)
     end
 end }
 
-OnControlPressed { BeaconNextCatControl, function(triggerArgs)
+OnControlReleased { BeaconNextCatControl, function(triggerArgs)
     if beaconState.isModLayer then
+        if beaconState.consumedControls[BeaconNextCatControl] then
+        beaconState.consumedControls[BeaconNextCatControl] = false
+        return
+    end
         beaconCommands.CycleBeaconCategory(1)
     end
 end }
 
-OnControlPressed { BeaconInfoControl, function(triggerArgs)
+OnControlPressed { PermaBeaconToggleControl, function(triggerArgs)
+    if beaconState.isModLayer then
+    beaconState:AddControlHold(BeaconInfoControl, controlHoldTimer, beaconCommands.TogglePermaBeaconPin)
+    end
+end}
+
+OnControlReleased { BeaconInfoControl, function(triggerArgs)
+    if beaconState.consumedControls[BeaconInfoControl] then
+        beaconState.consumedControls[BeaconInfoControl] = false
+        return
+    end
     if beaconState.isModLayer then
         TolkSpeak(info.SummarizeUnitInfo(beaconState.targetId, true), true)
     end
@@ -127,7 +152,7 @@ end }
 
 OnControlPressed { BeaconToggleControl, function(triggerArgs)
     if beaconState.isModLayer then
-        beaconCommands.ToggleBeaconSound()
+beaconState:AddControlHold(BeaconToggleControl, controlHoldTimer, beaconCommands.ToggleBeaconSound)
     end
 end }
 
@@ -142,7 +167,6 @@ OnControlPressed { "Inventory", function(triggerArgs)
         beaconCommands.TeleportToBeacon()
     end
 end }
-
 
 --------------------------------------------------------------------------------
 -- Keyboard controls
@@ -177,6 +201,12 @@ rom.inputs.on_key_pressed{kbBeaconTargetClosestControl, Name = "Beacon: Track Cl
     end
 end}
 
+rom.inputs.on_key_pressed{kbBeaconStopTrackingControl, Name = "Beacon: Tracking Stop", function()
+    if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
+        beaconCommands.StopTracking()
+    end
+end}
+
 rom.inputs.on_key_pressed{kbBeaconInfoControl, Name = "Beacon: Target Info", function()
     if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
             TolkSpeak(info.SummarizeUnitInfo(beaconState.targetId, true), true)
@@ -194,6 +224,19 @@ rom.inputs.on_key_pressed{kbBeaconTeleportToTargetControl, Name = "Beacon: Telep
             beaconCommands.TeleportToBeacon()
     end
 end}
+
+rom.inputs.on_key_pressed{kbBeaconToggleBeaconControl, Name = "Beacon: Toggle", function()
+    if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
+            beaconCommands.ToggleBeaconSound()
+    end
+end}
+
+rom.inputs.on_key_pressed{kbBeaconTogglePermaBeaconPin, Name = "Beacon: Pin Object", function()
+    if CurrentRun and CurrentRun.Hero and SessionMapState and not SessionMapState.IsPaused  and IsInputAllowed({}) and IsEmpty(ActiveScreens) then
+        beaconCommands.TogglePermaBeaconPin()
+    end
+end}
+
 
 --------------------------------------------------------------------------------
 -- animation announce handling
@@ -320,3 +363,8 @@ ModUtil.Path.Wrap("Activate", function(baseFunc, args)
         end
     end
 end)
+
+-- utils function wraps
+modutil.mod.Path.Wrap("GetIdsByType", GetIdsByTypeWrap)
+modutil.mod.Path.Wrap("GetDisplayName", GetDisplayNameWrap)
+modutil.mod.Path.Wrap("GetName", GetNameWrap)

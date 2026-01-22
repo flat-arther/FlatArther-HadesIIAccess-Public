@@ -1,6 +1,3 @@
-import 'data/icons.lua'
-import 'data/StaticIdDisplayNames.lua'
-
 function NormalizeToTable(x)
     if type(x) == "table" then
         return x
@@ -8,6 +5,13 @@ function NormalizeToTable(x)
     return { x }
 end
 
+function SwapPairs(tbl)
+    local swapped = {}
+    for k, v in pairs(tbl) do
+        swapped[v] = k
+    end
+    return swapped
+end
 
 function SortByClosest(ids)
     if not ids then return {} end
@@ -150,7 +154,7 @@ local function formatIconsString(raw)
     return table.concat(outputBuffer)
 end
 
-modutil.mod.Path.Wrap("GetDisplayName", function(base, args)
+function GetDisplayNameWrap(base, args)
     local display = base(args)
     if not args.IgnoreIcons then
         display = formatIconsString(display)
@@ -162,14 +166,15 @@ modutil.mod.Path.Wrap("GetDisplayName", function(base, args)
         display = display:gsub("([^%u])(%u)", "%1 %2")
     end
     return display
-end)
+end
 
-modutil.mod.Path.Wrap("GetName", function(base, args)
-    if StaticIdDisplayNames and StaticIdDisplayNames[args.Id] then
+function GetNameWrap(base, args)
+    if args.UseStaticReplacements == nil then args.UseStaticReplacements = true end
+    if args.UseStaticReplacements and StaticIdDisplayNames and StaticIdDisplayNames[args.Id] then
         return StaticIdDisplayNames[args.Id]
     end
     return base(args)
-end)
+end
 
 function TolkSpeak(Text, interrupt)
     if not Text then return end
@@ -177,4 +182,16 @@ function TolkSpeak(Text, interrupt)
     interrupt = interrupt or false
     if interrupt and rom and rom.tolk then rom.tolk.silence() end
     if rom and rom.tolk then rom.tolk.output(Text) end
+end
+
+function GetIdsByTypeWrap(base, args)
+    local result = base(args)
+    if not args.Names then return result end
+    for _, name in ipairs(args.Names) do
+        local id = NameToStaticId[name]
+        if id and not Contains(result, id) then
+            table.insert(result, id)
+        end
+    end
+    return result
 end

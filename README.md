@@ -1,16 +1,17 @@
 # Introduction
 
-This mod is designed to assist blind or visually impaired players navigate hades II better, to help players locate enemies, interactibles, NPCs, breakables, and exits. It includes the following features:
+This mod is designed to assist blind or visually impaired players navigate hades II better, by helping them locate enemies, interactibles, NPCs, breakables, and exits. It includes the following features:
 -A tracking Beacon: Sound pings that change based on whether a target is in front of or behind you.
 -Animation Announcements: Realtime report of tracked targets' animations, useful to learn enemy patterns.
 -Navigation Tools: Optional wall collision sounds, as well as teleportation to targets (Experimental).
 -Target info announcements: Announces the selected target's distance and status
+Note that while this mod requires Lirin's Tolk Compatibility mod to function, it does not conflict with any other accessibility mods. This mod is meant to be complementary to Lirin's Accessibility Mod. If you do not have it installed, make sure to download it. (Instructions for installation can be found here)https://forum.audiogames.net/topic/53522/hades-ii-106-full-accessibility-is-out/ . 
 
 # Usage
 
 ## Controller 
 
-Mod features are accessed via a Modifier Layer. You hold down the modifier key to "freeze" your character and use other buttons to scan the room.
+Mod features are accessed via a Mod Layer. You hold down the modifier key to "freeze" your character and use other buttons to scan the room.
 ###Controls:
 -Modifier Key: Hold LT to activate the mod layer.
 -Cycle Category: While holding the modifier, press Attack (X / Square) for previous category, and special attack (Y / Triangle) for next
@@ -18,18 +19,23 @@ Mod features are accessed via a Modifier Layer. You hold down the modifier key t
 -Track most important or closest: Press Dash (Cross / a) while holding the modifier button. Keep in mind that this behaves differently depending on whether or not sort by score is enabled. See config section for details.
 -Get Target Info: Press Cast (Circle / b) while holding modifier. Speaks name, health, distance.
 -Teleport to Target: Press Inventory (Dpad right) (Only works if no enemies are active).
--Player Info: Press Codex(Dpad up) while holding modifier.
+-Speak Player Info: Press Codex(Dpad up) while holding modifier.
+-Place or remove a permanent beacon for the focused object: Hold Cast (Circle / B) for 0.25 seconds (default) while holding down the modifier button. Note: Permanent beacons work based on object type rather than unique objects. If you place a permanent beacon on 'Ashes', all instances of that item will beep without you having to track it. Permanent beacon objects appear in the 'Active beacon objects' category. 
+-Toggle beacon sounds on and off: Hold Special Attack (Triangle / y) for 0.25 seconds (default) while holding the modifier button
 -Stop Tracking: Double-tap the Modifier button (LT).
 
 ### Keyboard controls
 
-These do not require you to hold any modifiers. In addition, these controls can be changed from the mod's config under [config.AccessModControls.KeyboardControls]. The defaults are:
+These do not require you to  use the mod layer. In addition, these controls can be changed from the mod's config under [config.AccessModControls.KeyboardControls]. The defaults are:
 -Prev/Next Target: [ and ]
 -Prev/Next Category: Shift + [ and Shift + ]
 -Track Closest | most important: \ depends on if sort by score is enabled
--Target Info: ' '
+-Target Info: '
 -Player Info: P
 -Teleport to Target: O, (Only outside combat)
+-Place or remove a permanent beacon for the focused object: Shift + \ (Does not require holding). Note: Permanent beacons work based on object type rather than unique objects. If you place a permanent beacon on 'Ashes', all instances of that item will beep without you having to track it. Permanent beacon objects appear in the 'Active beacon objects' category. 
+-Stop tracking: Backspace
+-Toggle beacon on or off: Shift + Bakspace (Does not require holding)
 
 # Configuration (config.cfg)
 
@@ -51,6 +57,7 @@ These do not require you to hold any modifiers. In addition, these controls can 
 
 ## AccessModControls
  DOUBLE_TAP_THRESHOLD: How fast you must press the modifier to stop tracking (default 0.25 seconds).
+- controlHoldTimer: For actions that require you to hold a specific control, this determines the amount of time (in seconds) you have to hold it for. Defaults to 0.25
 ### Keyboard controls
 Allows you to change the default keyboard controls and customize them however you wish. Sintax for control names is "Modifier Key", or "None Key", should you wish to not use any modifiers. For a list of every possible key, refer to [this map](https://github.com/SGG-Modding/Hell2Modding/blob/6d1cb8ed8870a401ac1cefd599bf2ae3a270d949/src/lua_extensions/bindings/hades/inputs.cpp#L204-L298)
 ####Examples of default controls, so that you have an idea: 
@@ -62,6 +69,9 @@ Allows you to change the default keyboard controls and customize them however yo
 - SpeakTargetInfo = None OemQuotes
 - SpeakPlayerInfo = None P
 - TeleportToTarget = None O
+- StopTracking = "None Back"
+            - ToggleBeaconSounds = "Shift Back"
+            - TogglePermanentBeacon = "Shift OemPipe"
 
 ## TrackingBeaconGlobal (Audio Beacon)
 

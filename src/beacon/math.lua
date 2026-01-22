@@ -6,6 +6,10 @@ local BEACON_MIN_INTERVAL = (config.TrackingBeaconGlobal.MinInterval or 0.25)
 local BEACON_MAX_INTERVAL = (config.TrackingBeaconGlobal.MaxInterval or 0.75)
 local BEACON_MAX_DISTANCE = (config.TrackingBeaconGlobal.MaxDistance or 1200)
 
+function M.IndexToInterval(index, maxIndex)
+    return 0.5 + (index - 1) / (maxIndex - 1) * (1.99 - 0.2)
+end
+
 function M.ComputeBeaconInterval(rawDist)
     local ratio = rawDist / BEACON_MAX_DISTANCE
     return BEACON_MIN_INTERVAL + ratio * (BEACON_MAX_INTERVAL - BEACON_MIN_INTERVAL)

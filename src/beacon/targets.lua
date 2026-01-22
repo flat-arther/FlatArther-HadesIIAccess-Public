@@ -87,6 +87,14 @@ function M.GetBeaconTargets(currentIndex)
         Distance = 9999,
     })
     -- Todo: Move this to its own function later
+    local permaBeaconIds = GetIdsByType({Names = beaconState.PermaBeaconTargets})
+    if Contains(cfg.DestinationTypes, "PermaBeaconTargets") then
+        for _, id in ipairs(permaBeaconIds) do
+            if IdExists( { Id = id}) and not Contains(targets, id) then
+                table.insert(targets, id)
+            end
+        end
+    end
     if not IsEmpty(ShipWheels) and Contains(cfg.DestinationTypes, "ShipWheels") then
         for _, id in pairs(ShipWheels) do
             if GetName({ Id = id}) == "ShipsSteeringWheel" then goto continue end
@@ -122,6 +130,16 @@ function M.GetBeaconTargets(currentIndex)
     return targets
 end
 
+function M.GetTargetIndex(catIndex, id)
+    if not id or not IdExists({ Id = id}) then return nil end
+local targets = M.GetBeaconTargets(catIndex)
+for idx, target in pairs(targets) do
+    if target.Id == id then
+        return idx
+    end
+end
+return nil
+end
 -- Target cicling
 function M.GetNextBeaconTarget(direction, catIndex)
     if catIndex == nil then catIndex = beaconState.categoryIndex end
@@ -177,6 +195,38 @@ function M.SetBeaconTarget(id, index, resetExistingTarget)
     return true
 end
 
+-- Pinning for permaBeacon
+function M.PinPermaBeaconObject(id)
+    if not id or not IdExists({ Id = id}) then return false end
+    local type = GetName({ Id = id})
+            if not type then return false end
+    if Contains(beaconState.PermaBeaconTargets, type) then return false end
+        table.insert(beaconState.PermaBeaconTargets, type)
+    return true
+end
+
+function M.UnpinPermaBeaconObject(id)
+            if not id or not IdExists({ Id = id}) then return false end
+            local type = GetName({ Id = id})
+            if not type then return false end
+ for i, target in ipairs(beaconState.PermaBeaconTargets) do
+if target == type then
+    table.remove(beaconState.PermaBeaconTargets, i)
+    return true
+end
+end
+return false
+end
+
+function M.IsBeaconObjectPinned(id)
+    if not id or not IdExists({ Id = id}) then return false end
+    local type = GetName({ Id = id})
+            if not type then return false end
+    if Contains(beaconState.PermaBeaconTargets, type) then return true end
+    return false
+end
+
+
 -- Target priority
 function M.ClassifyTarget(id)
     if not id then return nil end
@@ -223,7 +273,7 @@ function M.IsValidBeaconTarget(id)
     if id ~= 590506 and StaticIdDisplayNames[id] then return true end
     local obstacle = (MapState.ActiveObstacles and MapState.ActiveObstacles[id]) or (LootObjects and LootObjects[id])
     local door = (MapState.OfferedExitDoors and MapState.OfferedExitDoors[id]) or
-        (MapState.ShipWheels and MapState.ShipWheels[Id])
+        (MapState.ShipWheels and MapState.ShipWheels[id])
     local weapon = MapState.WeaponKits and MapState.WeaponKits[id]
     local familiar = MapState.FamiliarKits and MapState.FamiliarKits[id]
     local unit = ActiveEnemies and ActiveEnemies[id]
