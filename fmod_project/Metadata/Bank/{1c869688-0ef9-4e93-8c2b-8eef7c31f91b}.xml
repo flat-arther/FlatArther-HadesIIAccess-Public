@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="Bank" id="{1c869688-0ef9-4e93-8c2b-8eef7c31f91b}">
+		<property name="name">
+			<value>tracking_beacon</value>
+		</property>
+		<relationship name="folder">
+			<destination>{0f7c0c5d-98d3-4cd4-b234-1ba7ce655ded}</destination>
+		</relationship>
+	</object>
+</objects>
