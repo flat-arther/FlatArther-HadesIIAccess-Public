@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- You can now add permanent beacons to objects to make them beep without having to track them. Useful with familiars
+- You can now add permanent beacons to objects to make them beep without having to track them. Useful with familiars. Note that this is still experimental and not as good as I'd want it to be, so feedback would be appreciated. 
 - You can now mute or unmute beacon sounds. This includes those of the permanent beacon
 - For controler users: Added a system for control holds to perform alternative actions, so now I have more options for controls to use in for if new features get added. You can configure how long you have to hold buttons for in [AccessModControls.controlHoldTimer] set to 0.25 by default
 - Added the option to override user config entries for necessary resets. This shouldn't happen often, but know that it is necessary for this particular update. 
