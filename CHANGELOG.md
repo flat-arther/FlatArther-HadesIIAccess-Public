@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-01-22
+
 ### Added
+
 - You can now add permanent beacons to objects to make them beep without having to track them. Useful with familiars. Note that this is still experimental and not as good as I'd want it to be, so feedback would be appreciated. 
 - You can now mute or unmute beacon sounds. This includes those of the permanent beacon
 - For controler users: Added a system for control holds to perform alternative actions, so now I have more options for controls to use in for if new features get added. You can configure how long you have to hold buttons for in [AccessModControls.controlHoldTimer] set to 0.25 by default
@@ -15,9 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - For anyone wanting to mess around with the sounds, The repository now includes the fmod project used to create the  audiobank. The data folder also contains the GUIDs.txt. 
 
 ### Changed
+
 - This update will reset the [AcccessDisplay.LongInfoArray] config entry to defaults. Apologies for this, but it is necessary. 
 
 ### Fixed
+
 - You should no longer be able to teleport while you are concocting witchcraft or singing with Artemis
 - The amount of gold crowns you have now appears properly when getting player info. 
 
@@ -184,7 +189,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation of the accessibility tracking beacon.
 - Basic target detection and distance-based sorting.
 
-[unreleased]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.5.0...HEAD
+[unreleased]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.6.0...HEAD
+[0.6.0]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.4...0.5.0
 [0.4.4]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.3...0.4.4
 [0.4.3]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.3...0.4.3

@@ -5,7 +5,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "FlatArther"
 name = "HadesIIAccess"
-versionNumber = "0.5.0"
+versionNumber = "0.6.0"
 description = "An accessibility mod that provides audio-based navigation and targeting, as well as spoken info on various objects."
 websiteUrl = "https://github.com/flat-arther/FlatArther-HadesIIAccess-Public"
 containsNsfwContent = false
