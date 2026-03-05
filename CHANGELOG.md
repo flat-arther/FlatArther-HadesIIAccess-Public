@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-03-05
+
 ### Fixed
 
 - Hopefully fixed a bug where the game throws an error if the 'Names' array in GetIdsByType contains one element. This happens in cases such as with Rivals Polyphemus.
@@ -193,7 +195,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial implementation of the accessibility tracking beacon.
 - Basic target detection and distance-based sorting.
 
-[unreleased]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.6.0...HEAD
+[unreleased]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.6.1...HEAD
+[0.6.1]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.6.0...0.6.1
 [0.6.0]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.4...0.5.0
 [0.4.4]: https://github.com/flat-arther/FlatArther-HadesIIAccess-Public/compare/0.4.3...0.4.4
