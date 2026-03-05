@@ -187,7 +187,7 @@ end
 function GetIdsByTypeWrap(base, args)
     local result = base(args)
     if not args.Names then return result end
-    for _, name in ipairs(args.Names) do
+    for _, name in ipairs(NormalizeToTable(args.Names)) do
         local id = NameToStaticId[name]
         if id and not Contains(result, id) then
             table.insert(result, id)

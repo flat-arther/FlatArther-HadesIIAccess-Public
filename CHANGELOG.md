@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Hopefully fixed a bug where the game throws an error if the 'Names' array in GetIdsByType contains one element. This happens in cases such as with Rivals Polyphemus.
+
 ## [0.6.0] - 2026-01-22
 
 ### Added
